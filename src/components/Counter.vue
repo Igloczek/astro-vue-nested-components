@@ -1,25 +1,29 @@
 <template>
+  <h1><slot /></h1>
   <div class="counter">
     <button @click="subtract()">-</button>
-    <pre>{{ count }}</pre>
+    <Result :value="count" />
     <button @click="add()">+</button>
-  </div>
-  <div class="children">
-    <Children />
   </div>
 </template>
 
 <script>
 import { ref } from 'vue';
 
-import Children from './Children.vue';
+import Result from './Result.vue';
 
 export default {
   components: {
-    Children
+    Result
   },
-  setup() {
-    const count = ref(0);
+  props: {
+    start: {
+      type: String,
+      required: true
+    }
+  },
+  setup(props) {
+    const count = ref(parseInt(props.start))
     const add = () => (count.value = count.value + 1);
     const subtract = () => (count.value = count.value - 1);
     return {
@@ -30,3 +34,12 @@ export default {
   },
 };
 </script>
+
+<style>
+  .counter {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    place-items: center;
+    font-size: 2em;
+  }
+</style>
